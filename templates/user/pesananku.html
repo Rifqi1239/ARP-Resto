@@ -1,0 +1,68 @@
+{% extends 'user/layout.html' %}
+{% block isi %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">Pesanan Saya</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% if hasil %}
+        {% set total_jumlah = 0 %}
+        {% set total_harga = namespace(value=0) %}
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nama Barang</th>
+                    <th>Jumlah</th>
+                    <th>Harga Satuan</th>
+                    <th>Total Harga</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in hasil %}
+                <tr>
+                    <td>{{ p[1] }}</td>
+                    <td>{{ p[2] }}</td>
+                    <td>Rp {{ '{:,.0f}'.format(p[3] or 0) }}</td>
+                    <td>Rp {{ '{:,.0f}'.format(p[4] or 0) }}</td>
+                    <td>{{ p[5] }}</td>
+                    <td>
+                        <form action="{{ url_for('tambah_jumlah_pesanan', id=p[0]) }}" method="POST" class="d-inline" onsubmit="return confirm('Tambah jumlah pesanan?')">
+                            <button class="btn btn-sm btn-success">+</button>
+                        </form>
+                        <form action="{{ url_for('kurang_jumlah_pesanan', id=p[0]) }}" method="POST" class="d-inline" onsubmit="return confirm('Kurangi jumlah pesanan?')">
+                            <button class="btn btn-sm btn-warning">-</button>
+                        </form>
+                        <form action="{{ url_for('hapus_pesanan', id=p[0]) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus pesanan ini?')">
+                            <button class="btn btn-sm btn-danger">🗑</button>
+                        </form>
+                    </td>
+                </tr>
+                {% set total_jumlah = total_jumlah + (p[2] or 0) %}
+                {% set total_harga.value = total_harga.value + (p[4] or 0) %}
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-light fw-bold">
+                <tr>
+                    <td class="text-end">Total</td>
+                    <td>{{ total_jumlah }}</td>
+                    <td>-</td>
+                    <td>Rp {{ '{:,.0f}'.format(total_harga.value) }}</td>
+                    <td colspan="2">-</td>
+                </tr>
+            </tfoot>
+        </table>
+    {% else %}
+        <p>Belum ada pesanan yang dibuat.</p>
+    {% endif %}
+</div>
+{% endblock %}

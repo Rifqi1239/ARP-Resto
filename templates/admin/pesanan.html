@@ -1,0 +1,68 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Data Seluruh Pesanan</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-warning">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% if hasil %}
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Pemesan</th>
+                    <th>Nama Barang</th>
+                    <th>Jumlah</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in hasil %}
+                <tr>
+                    <td>{{ p[0] }}</td>
+                    <td>{{ p[1] }}</td>
+                    <td>{{ p[2] }}</td>
+                    <td>{{ p[3] }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('ubah_status_pesanan', id=p[0]) }}" onsubmit="return konfirmasiSelesai(this)">
+                            <select name="status" class="form-select form-select-sm">
+                                <option value="Belum Diproses" {% if p[4] == 'Belum Diproses' %}selected{% endif %}>Belum Diproses</option>
+                                <option value="Diproses" {% if p[4] == 'Diproses' %}selected{% endif %}>Diproses</option>
+                                <option value="Selesai" {% if p[4] == 'Selesai' %}selected{% endif %}>Selesai</option>
+                            </select>
+                    </td>
+                    <td>
+                            <button type="submit" class="btn btn-sm btn-primary">Ubah</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Tidak ada pesanan yang tercatat.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">← Kembali ke Dashboard Admin</a>
+</div>
+
+<!-- Konfirmasi untuk status 'Selesai' -->
+<script>
+function konfirmasiSelesai(form) {
+    const status = form.querySelector('select[name="status"]').value;
+    if (status === "Selesai") {
+        return confirm("Pesanan akan ditandai Selesai dan akan dihapus dari sistem. Lanjutkan?");
+    }
+    return true;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+
+<div class="container">
+    <h3 class="mb-4">Tambah Menu Makanan/Minuman</h3>
+    <form action="/admin/form-tambah-barang" method="POST" enctype="multipart/form-data">
+        
+        <!-- Nama -->
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama Menu</label>
+            <input type="text" class="form-control" id="nama" name="nama" required>
+        </div>
+
+        <!-- Harga -->
+        <div class="mb-3">
+            <label for="harga" class="form-label">Harga (Rp)</label>
+            <input type="number" class="form-control" id="harga" name="harga" required>
+        </div>
+
+        <!-- Stok -->
+        <div class="mb-3">
+            <label for="stok" class="form-label">Stok</label>
+            <input type="number" class="form-control" id="stok" name="stok" required>
+        </div>
+
+        <!-- Kategori -->
+        <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori</label>
+            <select class="form-select" id="kategori" name="kategori" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mb-3">
+            <label for="deskripsi" class="form-label">Deskripsi</label>
+            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+        </div>
+
+        <!-- Upload Gambar -->
+        <div class="mb-3">
+            <label for="gambar" class="form-label">Gambar Menu</label>
+            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Habis">Habis</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
+</div>
+
+{% endblock %}

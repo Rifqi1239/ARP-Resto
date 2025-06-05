@@ -1,0 +1,29 @@
+{% extends 'user/layout.html' %}
+
+{% block isi %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-info">Form Pemesanan</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" id="form-pesan">
+                <div class="mb-3">
+                    <label for="jumlah" class="form-label">Jumlah Pesanan</label>
+                    <input type="number" class="form-control" id="jumlah" name="jumlah" min="1" value="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="return confirmPesan(event)">Kirim Pesanan</button>
+                <a href="/" class="btn btn-secondary">Batal</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmPesan(event) {
+    event.preventDefault();
+    const konfirmasi = confirm("Apakah Anda yakin ingin mengirim pesanan ini?");
+    if (konfirmasi) {
+        document.getElementById("form-pesan").submit();
+    }
+}
+</script>
+{% endblock %}

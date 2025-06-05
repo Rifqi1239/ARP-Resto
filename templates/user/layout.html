@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Pengguna</title>
+
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0d1b2a;
+            color: white;
+            min-height: 100vh;
+            opacity: 1;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        body.fade-out {
+            opacity: 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .navbar {
+            background-color: #1b263b !important;
+        }
+
+        .navbar .nav-link,
+        .navbar .navbar-brand {
+            color: white !important;
+            transition: color 0.2s ease;
+        }
+
+        .navbar .nav-link:hover {
+            color: #a8dadc !important;
+        }
+
+        .table thead {
+            background-color: #1b263b;
+            color: white;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #2f3e4d;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #3c4d5e;
+        }
+
+        a {
+            color: #a8dadc;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #f1faee;
+        }
+
+        .btn, button {
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .btn:hover, button:hover {
+            transform: scale(1.03);
+        }
+
+        .alert {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body class="fade-in">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Alhamdulillah Restoran</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon bg-light"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kontak">Kontak</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pesananku">Pesananku</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Halaman -->
+    <div class="container mt-5 fade-in">
+        {% block isi %}{% endblock %}
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Fade-out on link click -->
+    <script>
+        document.querySelectorAll('a.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href && href !== '#' && !href.startsWith('javascript:')) {
+                    e.preventDefault();
+                    document.body.classList.remove('fade-in');
+                    document.body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 300);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

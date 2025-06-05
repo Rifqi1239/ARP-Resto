@@ -1,0 +1,28 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row">
+      <!-- Card: Jumlah Menu -->
+      <div class="col-md-6 mb-4">
+        <div class="card text-white bg-primary h-100">
+          <div class="card-body">
+            <h5 class="card-title">Menu</h5>
+            <p class="card-text">Jumlah menu tersedia: <strong>{{ total_menu }}</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Jumlah Pesanan -->
+      <div class="col-md-6 mb-4">
+        <div class="card text-white bg-success h-100">
+          <div class="card-body">
+            <h5 class="card-title">Pesanan</h5>
+            <p class="card-text">Total pesanan: <strong>{{ total_pesanan }}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+<div class="container">
+  <h3 class="mb-4">Edit Pengguna</h3>
+  <form action="/admin/form-edit-pengguna/{{ pengguna[0] }}" method="POST">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" name="username" value="{{ pengguna[1] }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" name="password" value="{{ pengguna[2] }}" required>
+    </div>
+    <div class="mb-3">
+      <label for="role" class="form-label">Role</label>
+      <select name="role" class="form-select" required>
+        <option value="user" {% if pengguna[3] == 'user' %}selected{% endif %}>User</option>
+        <option value="admin" {% if pengguna[3] == 'admin' %}selected{% endif %}>Admin</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+</div>
+{% endblock %}

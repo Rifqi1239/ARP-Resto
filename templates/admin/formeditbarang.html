@@ -1,0 +1,63 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+
+<div class="container">
+    <h3 class="mb-4">Edit Menu Makanan/Minuman</h3>
+    <form action="/admin/form-edit-barang/{{barang[0]}}" method="POST" enctype="multipart/form-data">
+        
+        <!-- Nama -->
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama Menu</label>
+            <input type="text" class="form-control" id="nama" name="nama" value="{{barang[1]}}" required>
+        </div>
+
+        <!-- Harga -->
+        <div class="mb-3">
+            <label for="harga" class="form-label">Harga (Rp)</label>
+            <input type="number" class="form-control" id="harga" name="harga" value="{{barang[2]}}" required>
+        </div>
+
+        <!-- Stok -->
+        <div class="mb-3">
+            <label for="stok" class="form-label">Stok</label>
+            <input type="number" class="form-control" id="stok" name="stok" value="{{barang[3]}}" required>
+        </div>
+
+        <!-- Kategori -->
+        <div class="mb-3">
+            <label for="kategori" class="form-label">Kategori</label>
+            <select class="form-select" id="kategori" name="kategori" required>
+                <option value="{{barang[4]}}">{{barang[4]}}</option>
+                {% if barang[4] != 'Makanan' %}<option value="Makanan">Makanan</option>{% endif %}
+                {% if barang[4] != 'Minuman' %}<option value="Minuman">Minuman</option>{% endif %}
+                {% if barang[4] != 'Lainnya' %}<option value="Lainnya">Lainnya</option>{% endif %}
+            </select>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mb-3">
+            <label for="deskripsi" class="form-label">Deskripsi</label>
+            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3">{{barang[5]}}</textarea>
+        </div>
+
+        <!-- Upload Gambar -->
+        <div class="mb-3">
+            <label for="gambar" class="form-label">Gambar Menu (Kosongkan jika tidak ingin mengubah)</label>
+            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*">
+        </div>
+
+        <!-- Status -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" name="status" required>
+                <option value="{{barang[7]}}">{{barang[7]}}</option>
+                {% if barang[7] != 'Tersedia' %}<option value="Tersedia">Tersedia</option>{% endif %}
+                {% if barang[7] != 'Habis' %}<option value="Habis">Habis</option>{% endif %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan</button>
+    </form>
+</div>
+
+{% endblock %}

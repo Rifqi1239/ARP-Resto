@@ -1,0 +1,74 @@
+{% extends 'admin/layout.html' %}
+{% block content %}
+
+<div class="container">
+    <h2 class="mb-4">Daftar Menu Restoran</h2>
+    
+    <!-- Tombol Tambah -->
+    <a class="btn btn-primary mb-3" href="/admin/form-tambah-barang">+ Tambah Menu</a>
+
+    <!-- Tabel -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>No</th>
+                <th>Nama Menu</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Kategori</th>
+                <th>Deskripsi</th>
+                <th>Gambar</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for isi in hasil %}
+            <tr>
+                <td class="text-center">{{ loop.index }}</td>
+                <td>{{ isi[1] }}</td>
+                <td>Rp{{ "{:,.0f}".format(isi[2]|int) }}</td>
+                <td class="text-center">
+                    {% if isi[3] > 0 %}
+                        <span class="badge bg-success">Tersedia ({{ isi[3] }})</span>
+                    {% else %}
+                        <span class="badge bg-danger">Habis</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if isi[4] == 'Makanan' %}
+                        <span class="badge bg-warning text-dark">{{ isi[4] }}</span>
+                    {% elif isi[4] == 'Minuman' %}
+                        <span class="badge bg-info text-dark">{{ isi[4] }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ isi[4] }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ isi[5] }}</td>
+                <td class="text-center">
+                    {% if isi[6] %}
+                        <img src="{{ url_for('static', filename='uploads/' ~ isi[6]) }}" alt="{{ isi[1] }}" width="80">
+                    {% else %}
+                        <em>Tanpa gambar</em>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if isi[7] == 'Tersedia' %}
+                        <span class="badge bg-success">{{ isi[7] }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ isi[7] }}</span>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    <a href="/admin/form-edit-barang/{{ isi[0] }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="/admin/hapus-barang/{{ isi[0] }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus menu ini?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
