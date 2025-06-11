@@ -18,7 +18,6 @@ UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'jfif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# ----------------------------- Fungsi Bantu -----------------------------
 
 def is_admin():
     return session.get('user') and session.get('role') == 'admin'
@@ -32,7 +31,6 @@ def get_user_id_by_username(username):
         result = cursor.fetchone()
         return result[0] if result else None
 
-# ----------------------------- Routing Umum -----------------------------
 
 @app.route('/')
 def index():
@@ -56,7 +54,7 @@ def login():
             cursor.execute("SELECT * FROM user WHERE username=%s AND password=%s", (username, password))
             user = cursor.fetchone()
             if user:
-                session.permanent = True  # 🟢 Tambahkan ini
+                session.permanent = True  # 
                 session['user'] = user[1]
                 session['role'] = user[3]
                 return redirect('/admin/home' if user[3] == 'admin' else '/')
@@ -143,7 +141,6 @@ def admin_pesanan():
         hasil = []
     return render_template('admin/pesanan.html', hasil=hasil)
 
-# ----------------------------- Admin: Kelola Barang -----------------------------
 
 @app.route('/admin/admin-kelola-barang')
 def kelolabarang():

@@ -3,20 +3,53 @@
 <div class="container">
     <h2 class="mb-4">Dashboard</h2>
 
+    <!-- Carousel dengan visual lebih menarik -->
+    <div id="dashboardCarousel" class="carousel slide mb-5 shadow rounded overflow-hidden" data-bs-ride="carousel" style="max-height: 350px;">
+      <div class="carousel-inner">
+        <div class="carousel-item active position-relative">
+          <img src="/static/uploads/anis1.jfif" class="d-block w-100 img-slide" alt="Slide 1">
+          <div class="carousel-caption d-md-block bg-dark bg-opacity-50 p-3 rounded">
+            <h5 class="fw-bold text-white">Selamat Datang Admin ARP Resto</h5>
+            <p class="text-light">Pelayanan cepat dan ramah dikantong.</p>
+          </div>
+        </div>
+        <div class="carousel-item position-relative">
+          <img src="/static/uploads/jangar.jfif" class="d-block w-100 img-slide" alt="Slide 2">
+          <div class="carousel-caption d-md-block bg-dark bg-opacity-50 p-3 rounded">
+            <h5 class="fw-bold text-white">Cek Pesanan Terbaru</h5>
+            <p class="text-light">Pastikan semua pesanan diproses tepat waktu.</p>
+          </div>
+        </div>
+        <div class="carousel-item position-relative">
+          <img src="/static/uploads/wowok1.jfif" class="d-block w-100 img-slide" alt="Slide 3">
+          <div class="carousel-caption d-md-block bg-dark bg-opacity-50 p-3 rounded">
+            <h5 class="fw-bold text-white">Paling Update</h5>
+            <p class="text-light">Tambah atau ubah stok barang setiap hari.</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Sebelumnya</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Berikutnya</span>
+      </button>
+    </div>
+
+    <!-- Dashboard Cards -->
     <div class="row">
-      <!-- Card: Jumlah Menu -->
       <div class="col-md-6 mb-4">
-        <div class="card text-white bg-primary h-100">
+        <div class="card text-white bg-primary h-100 shadow">
           <div class="card-body">
             <h5 class="card-title">Menu</h5>
             <p class="card-text">Jumlah menu tersedia: <strong>{{ total_menu }}</strong></p>
           </div>
         </div>
       </div>
-
-      <!-- Card: Jumlah Pesanan -->
       <div class="col-md-6 mb-4">
-        <div class="card text-white bg-success h-100">
+        <div class="card text-white bg-success h-100 shadow">
           <div class="card-body">
             <h5 class="card-title">Pesanan</h5>
             <p class="card-text">Total pesanan: <strong>{{ total_pesanan }}</strong></p>
@@ -25,4 +58,20 @@
       </div>
     </div>
 </div>
+
+<style>
+  .img-slide {
+    object-fit: cover;
+    height: 350px;
+    transition: transform 0.5s ease;
+  }
+
+  .carousel-item:hover .img-slide {
+    transform: scale(1.05);
+  }
+
+  .carousel-caption {
+    bottom: 20px;
+  }
+</style>
 {% endblock %}
