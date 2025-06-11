@@ -4,227 +4,267 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Halaman Admin</title>
-
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
-    html {
-      scroll-behavior: smooth;
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
 
     body {
-      padding-top: 56px;
-      background-color: #0d1b2a;
+      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77, #0d1b2a);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
       color: #ffffff;
-      transition: opacity 0.3s ease-in-out, background-color 0.3s, color 0.3s;
+      transition: all 0.3s ease-in-out;
     }
 
-    body.fade-out {
-      opacity: 0;
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .wrapper {
+      display: flex;
+      height: calc(100% - 56px);
+      margin-top: 56px;
     }
 
     .sidebar {
-      min-height: 100vh;
+      width: 250px;
       background-color: #1b263b;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 1rem;
+      height: 100%;
+    }
+
+    .sidebar.hide {
+      margin-left: -250px;
     }
 
     .sidebar .nav-link {
-      color: #ffffff;
-      transition: background 0.3s;
+      color: #e0e0e0;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .sidebar .nav-link i {
+      margin-right: 10px;
+      font-size: 1.1rem;
     }
 
     .sidebar .nav-link.active,
     .sidebar .nav-link:hover {
       background-color: #415a77;
       color: #ffffff;
+      transform: translateX(5px);
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 2rem;
+      background-color: rgba(13, 27, 42, 0.7);
+      border-radius: 15px;
+      margin: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      overflow-y: auto;
+      backdrop-filter: blur(5px);
+    }
+
+    .main-content.full {
+      margin-left: 0;
     }
 
     .navbar {
       background-color: #1b263b !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
     }
 
-    .btn-logout {
-      background-color: #e63946;
-      color: white;
-      margin-top: auto;
-    }
-
-    .btn-logout:hover {
-      background-color: #d62828;
-    }
-
-    .alert {
-      color: #000;
-    }
-
-    .offcanvas {
-      background-color: #1b263b;
-      color: white;
-    }
-
-    .offcanvas .nav-link {
-      color: white;
-    }
-
-    .offcanvas .nav-link:hover {
-      background-color: #415a77;
-    }
-
-    main {
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Light mode styles */
-    body.light-mode {
-      background-color: #f8f9fa;
+    .light-mode {
+      background: linear-gradient(135deg, #f0f4f8, #e9ecef, #dee2e6, #f8f9fa);
+      background-size: 400% 400%;
+      animation: gradientAnimation 15s ease infinite;
       color: #212529;
     }
 
     .light-mode .sidebar {
       background-color: #ffffff;
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .light-mode .sidebar .nav-link {
-      color: #212529;
+      color: #343a40;
     }
 
-    .light-mode .sidebar .nav-link.active,
     .light-mode .sidebar .nav-link:hover {
       background-color: #dee2e6;
-      color: #000;
+      color: #212529;
     }
 
     .light-mode .navbar {
       background-color: #ffffff !important;
     }
 
-    .light-mode .offcanvas {
-      background-color: #ffffff;
-      color: #000;
-    }
-
-    .light-mode .offcanvas .nav-link {
+    .light-mode .main-content {
+      background-color: rgba(255, 255, 255, 0.85);
       color: #212529;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
 
-    .light-mode .offcanvas .nav-link:hover {
-      background-color: #dee2e6;
+    .theme-text {
+      color: #ff4d6d;
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .light-mode .theme-text {
+      color: #007BFF;
+      text-shadow: none;
     }
 
     .mode-toggle {
       cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px 10px;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .mode-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
     .light-mode .mode-toggle {
-      border-color: #212529;
-      color: #212529;
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #343a40;
     }
 
-    /* Admin Panel text color switch */
-    .theme-text {
+    .light-mode .mode-toggle:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .toggle-sidebar-btn {
+      background: none;
+      border: none;
       color: white;
-      transition: color 0.3s ease;
+      font-size: 1.8rem;
+      margin-right: 1rem;
     }
 
-    .light-mode .theme-text {
+    .light-mode .toggle-sidebar-btn {
       color: black;
+    }
+
+    .btn-logout {
+      background-color: transparent;
+      color: #e63946;
+      border: 1px solid #e63946;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin-left: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-logout i {
+      margin-right: 8px;
+      font-size: 1rem;
+    }
+
+    .btn-logout:hover {
+      background-color: #e63946;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(230, 57, 70, 0.4);
+    }
+
+    .light-mode .btn-logout {
+      color: #020202;
+      border-color: #dc3545;
+    }
+
+    .light-mode .btn-logout:hover {
+      background-color: #ffffff;
+      color: #ff0000;
+    }
+
+    .card {
+      background-color: rgba(27, 38, 59, 0.8);
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .light-mode .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .alert {
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand theme-text" href="#">Admin Panel</a>
-      <button class="btn btn-sm btn-outline-light mode-toggle" onclick="toggleMode()">🌙/☀️</button>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top px-3">
+    <button class="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
+    <a class="navbar-brand theme-text" href="#">ARP Resto</a>
+    <div class="ms-auto d-flex align-items-center">
+      <button class="btn btn-sm btn-outline-light mode-toggle me-2" onclick="toggleMode()">🌙/☀️</button>
+      <a class="btn btn-logout" href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
   </nav>
 
-  <!-- Sidebar (desktop) -->
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="col-md-3 col-lg-2 d-none d-md-flex sidebar p-3">
-        <div>
-          <ul class="nav flex-column">
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == '/admin/home' %}active{% endif %}" href="/admin/home">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/admin/admin-kelola-barang' in request.path %}active{% endif %}" href="/admin/admin-kelola-barang">Kelola Menu</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/admin/admin-kelola-pengguna' in request.path %}active{% endif %}" href="/admin/admin-kelola-pengguna">Kelola Pengguna</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link {% if '/admin/pesanan' in request.path %}active{% endif %}" href="/admin/pesanan">Lihat Pesanan</a>
-            </li>
-          </ul>
-        </div>
-        <div>
-          <a class="btn btn-logout w-100" href="#" onclick="confirmLogout()">Logout</a>
-        </div>
-      </nav>
+  <div class="wrapper">
+    <nav class="sidebar p-3" id="sidebar">
+      <div>
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="/admin/home"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-barang"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-pengguna"><i class="fas fa-user-cog"></i> Kelola Pengguna</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/pesanan"><i class="fas fa-receipt"></i> Lihat Pesanan</a></li>
+        </ul>
+      </div>
+    </nav>
 
-      <!-- Main Content -->
-      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-      </main>
-    </div>
+    <main class="main-content" id="mainContent">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
   </div>
 
-  <!-- Offcanvas Sidebar (mobile) -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title">Menu Admin</h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/home">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/admin-kelola-barang">Kelola Menu</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/admin-kelola-pengguna">Kelola Pengguna</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/admin/pesanan">Lihat Pesanan</a>
-        </li>
-        <li class="nav-item mt-4">
-          <a class="btn btn-logout w-100" href="#" onclick="confirmLogout()">Logout</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     function confirmLogout() {
       if (confirm('Apakah Anda yakin ingin logout?')) {
@@ -232,16 +272,12 @@
       }
     }
 
-    document.querySelectorAll('a.nav-link').forEach(link => {
-      link.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href && href !== '#' && !href.startsWith('javascript:')) {
-          document.body.classList.add('fade-out');
-          setTimeout(() => window.location.href = href, 300);
-          e.preventDefault();
-        }
-      });
-    });
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('mainContent');
+      sidebar.classList.toggle('hide');
+      mainContent.classList.toggle('full');
+    }
 
     function toggleMode() {
       document.body.classList.toggle('light-mode');
