@@ -96,7 +96,6 @@ def logout():
     session.clear()
     return redirect('/login')
 
-# ----------------------------- Admin: Beranda -----------------------------
 @app.route('/admin/home')
 def home():
     if not is_admin():
@@ -118,9 +117,6 @@ def home():
     return render_template('admin/index.html', total_menu=total_menu, total_pesanan=total_pesanan)
 
 
-
-
-# ----------------------------- Admin: Pesanan -----------------------------
 
 @app.route('/admin/pesanan')
 def admin_pesanan():
@@ -305,7 +301,6 @@ def hapus_pengguna(id):
     return redirect('/admin/admin-kelola-pengguna')
 
 
-# ----------------------------- User: Lihat Pesananku -----------------------------
 @app.route('/pesananku')
 def pesananku():
     if 'user' not in session:
@@ -337,7 +332,7 @@ def hapus_pesanan_user(id):
         return redirect('/login')
     try:
         with db.get_db().cursor() as cursor:
-            # Kembalikan stok barang sebelum hapus
+
             cursor.execute("SELECT barang_id, jumlah FROM pesanan WHERE id = %s", (id,))
             data = cursor.fetchone()
             if data:
@@ -358,7 +353,7 @@ def tambah_jumlah_pesanan(id):
         conn = db.get_db()
         cursor = conn.cursor()
 
-        # Ambil pesanan terkait
+        
         cursor.execute("SELECT barang_id, jumlah FROM pesanan WHERE id = %s", (id,))
         pesanan = cursor.fetchone()
         if not pesanan:
@@ -367,14 +362,14 @@ def tambah_jumlah_pesanan(id):
 
         barang_id, jumlah_lama = pesanan
 
-        # Periksa stok tersedia
+        
         cursor.execute("SELECT stok FROM barang WHERE id = %s", (barang_id,))
         stok = cursor.fetchone()[0]
         if stok < 1:
             flash("Stok tidak mencukupi", "danger")
             return redirect('/pesananku')
 
-        # Update pesanan & stok
+        
         cursor.execute("UPDATE pesanan SET jumlah = jumlah + 1 WHERE id = %s", (id,))
         cursor.execute("UPDATE barang SET stok = stok - 1 WHERE id = %s", (barang_id,))
         conn.commit()
@@ -386,8 +381,6 @@ def tambah_jumlah_pesanan(id):
 
 
 
-
-# ----------------------------- User: Pesan Barang -----------------------------
 
 
 @app.route('/pesanan/kurang/<int:id>', methods=['POST'])
@@ -479,12 +472,10 @@ def ubah_status_pesanan(id):
         flash(f"Gagal memperbarui status: {e}", "danger")
     return redirect('/admin/pesanan')
 
-# ----------------------------- Jalankan Aplikasi -----------------------------
 if __name__ == '__main__':
     app.run(debug=True)
 
 
-# ----------------------------- Jalankan -----------------------------
 
 if __name__ == '__main__':
     app.run(debug=True)

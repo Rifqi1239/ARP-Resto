@@ -1,255 +1,214 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Halaman Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
+    /* ────── Variables ────── */
+    :root {
+      --primary-bg: #16213E;
+      --secondary-bg: #0F3460;
+      --tertiary-bg: #1A1A2E;
+      --accent-color: #E94560;
+      --highlight-color: #F9A826;
+      --text-light: #E0E0E0;
+      --box-shadow: rgba(0,0,0,0.2);
+      --card-shadow: rgba(0,0,0,0.3);
+      --navbar-gradient: linear-gradient(90deg, var(--accent-color), var(--primary-bg));
+    }
+    html[data-bs-theme="light"] {
+      --primary-bg: #F8F9FA;
+      --secondary-bg: #FFFFFF;
+      --tertiary-bg: #E9ECEF;
+      --accent-color: #007BFF;
+      --highlight-color: #F9A826;
+      --text-light: #343A40;
+      --navbar-gradient: linear-gradient(90deg, var(--accent-color), var(--primary-bg));
+    }
+
+    /* ────── Smooth theme-change transitions ────── */
+    html,
+    body,
+    .navbar,
+    .sidebar,
+    .main-content,
+    .btn-logout,
+    .mode-toggle {
+      transition: background 0.6s ease, color 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    /* ────── Animated page-background on <html> ────── */
+    html {
+      margin: 0; padding: 0; height: 100%;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb, #38bdf8);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
       overflow: hidden;
     }
-
-    body {
-      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77, #0d1b2a);
-      background-size: 400% 400%;
-      animation: gradientAnimation 15s ease infinite;
-      color: #ffffff;
-      transition: all 0.3s ease-in-out;
-    }
-
-    @keyframes gradientAnimation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
+    /* ────── Base reset ────── */
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: transparent; /* biar gradient html-nya terlihat */
+      color: var(--text-light);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    body.fade-out { opacity: 0; transition: opacity 0.4s; }
+
+    /* ────── Page Transitions ────── */
+    @keyframes slideLeftIn  { from{transform:translateX(100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
+    @keyframes slideRightIn { from{transform:translateX(-100%);opacity:0;} to{transform:translateX(0);opacity:1;} }
+    @keyframes zoomIn       { from{transform:scale(0.8);opacity:0;}   to{transform:scale(1);opacity:1;} }
+    @keyframes rotateIn     { from{transform:rotate(90deg);opacity:0;} to{transform:rotate(0);opacity:1;} }
+
+    .transition-in.slide-left  { animation: slideLeftIn  0.6s ease-out both; }
+    .transition-in.slide-right { animation: slideRightIn 0.6s ease-out both; }
+    .transition-in.zoom-in     { animation: zoomIn        0.6s ease-out both; }
+    .transition-in.rotate-in   { animation: rotateIn      0.6s ease-out both; }
+
+    .transition-out.slide-left  { animation: slideLeftIn  0.6s ease-in reverse both; }
+    .transition-out.slide-right { animation: slideRightIn 0.6s ease-in reverse both; }
+    .transition-out.zoom-in     { animation: zoomIn        0.6s ease-in reverse both; }
+    .transition-out.rotate-in   { animation: rotateIn      0.6s ease-in reverse both; }
+
+    /* ────── Animated Navbar ────── */
+    .navbar {
+      position: fixed; top: 0; width: 100%; z-index: 1030;
+      background: var(--navbar-gradient) !important;
+      background-size: 200% 200%;
+      animation: gradient-animation 8s ease infinite;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px var(--box-shadow);
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center;
+    }
+    @keyframes gradient-animation {
+      0%   { background-position:0% 50%; }
+      50%  { background-position:100% 50%; }
+      100% { background-position:0% 50%; }
+    }
+    .navbar .navbar-brand {
+      background: linear-gradient(90deg, var(--secondary-bg), var(--tertiary-bg));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent !important;
+      font-weight:600; font-size:1.5rem;
+      pointer-events: none; cursor: default;
+      margin-right: auto;
+    }
+
+    /* mode-toggle & logout */
+    .mode-toggle {
+      border: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border-radius: 50px;
+      padding: 0.3rem 0.6rem;
+      margin-right: 1rem;
+    }
+    .mode-toggle:hover { background: rgba(255,255,255,0.2); }
+    .btn-logout {
+      display: flex; align-items: center;
+      background: transparent;
+      color: #e63946;
+      border: 1px solid #e63946;
+      border-radius: 20px;
+      padding: 0.4rem 0.8rem;
+    }
+    .btn-logout i { margin-right: 0.4rem; }
+    .btn-logout:hover {
+      background: #e63946;
+      color: #fff;
+      box-shadow: 0 4px 8px rgba(230,57,70,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ────── Layout ────── */
     .wrapper {
       display: flex;
-      height: calc(100% - 56px);
-      margin-top: 56px;
+      margin-top: 56px; /* tinggi navbar */
+      height: calc(100vh - 56px);
+      overflow: hidden;
     }
-
     .sidebar {
-      width: 250px;
-      background-color: #1b263b;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 1rem;
-      height: 100%;
+      width: 250px; flex-shrink: 0;
+      background-color: var(--secondary-bg);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: margin-left 0.3s ease;
     }
-
-    .sidebar.hide {
-      margin-left: -250px;
-    }
-
+    .sidebar.hide { margin-left: -250px; }
     .sidebar .nav-link {
-      color: #e0e0e0;
-      padding: 10px 15px;
-      border-radius: 5px;
-      margin-bottom: 5px;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
+      color: var(--text-light);
+      padding: 0.5rem 1rem;
+      display: flex; align-items: center;
+      border-radius: 0.5rem;
+      transition: transform 0.2s, background 0.2s;
     }
-
+    /* Jarak antara ikon dan teks */
     .sidebar .nav-link i {
-      margin-right: 10px;
+      margin-right: 0.75rem;
       font-size: 1.1rem;
     }
-
-    .sidebar .nav-link.active,
-    .sidebar .nav-link:hover {
-      background-color: #415a77;
-      color: #ffffff;
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
+      background: var(--tertiary-bg);
       transform: translateX(5px);
     }
 
     .main-content {
       flex-grow: 1;
-      padding: 2rem;
-      background-color: rgba(13, 27, 42, 0.7);
-      border-radius: 15px;
       margin: 1rem;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-      overflow-y: auto;
+      padding: 1.5rem;
+      background: rgba(13,27,42,0.7);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
       backdrop-filter: blur(5px);
+      overflow-y: auto;
     }
+    .main-content.full { margin-left: 0; }
 
-    .main-content.full {
-      margin-left: 0;
-    }
-
-    .navbar {
-      background-color: #1b263b !important;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-    }
-
-    .light-mode {
-      background: linear-gradient(135deg, #f0f4f8, #e9ecef, #dee2e6, #f8f9fa);
-      background-size: 400% 400%;
-      animation: gradientAnimation 15s ease infinite;
-      color: #212529;
-    }
-
-    .light-mode .sidebar {
-      background-color: #ffffff;
-      border-right: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .light-mode .sidebar .nav-link {
-      color: #343a40;
-    }
-
-    .light-mode .sidebar .nav-link:hover {
-      background-color: #dee2e6;
-      color: #212529;
-    }
-
-    .light-mode .navbar {
-      background-color: #ffffff !important;
-    }
-
-    .light-mode .main-content {
-      background-color: rgba(255, 255, 255, 0.85);
-      color: #212529;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .theme-text {
-      color: #ff4d6d;
-      font-weight: bold;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-    }
-
-    .light-mode .theme-text {
-      color: #007BFF;
-      text-shadow: none;
-    }
-
-    .mode-toggle {
-      cursor: pointer;
-      font-size: 1.2rem;
-      padding: 5px 10px;
-      border-radius: 50px;
-      transition: all 0.3s ease;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-
-    .mode-toggle:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .light-mode .mode-toggle {
-      background-color: rgba(0, 0, 0, 0.05);
-      color: #343a40;
-    }
-
-    .light-mode .mode-toggle:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .toggle-sidebar-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.8rem;
-      margin-right: 1rem;
-    }
-
-    .light-mode .toggle-sidebar-btn {
-      color: black;
-    }
-
-    .btn-logout {
-      background-color: transparent;
-      color: #e63946;
-      border: 1px solid #e63946;
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      margin-left: 15px;
-      display: flex;
-      align-items: center;
-    }
-
-    .btn-logout i {
-      margin-right: 8px;
-      font-size: 1rem;
-    }
-
-    .btn-logout:hover {
-      background-color: #e63946;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(230, 57, 70, 0.4);
-    }
-
-    .light-mode .btn-logout {
-      color: #020202;
-      border-color: #dc3545;
-    }
-
-    .light-mode .btn-logout:hover {
-      background-color: #ffffff;
-      color: #ff0000;
-    }
-
-    .card {
-      background-color: rgba(27, 38, 59, 0.8);
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-      margin-bottom: 1.5rem;
-    }
-
-    .light-mode .card {
-      background-color: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .alert {
-      border-radius: 8px;
+    /* scrollbar styling (opsional) */
+    .main-content::-webkit-scrollbar { width: 8px; }
+    .main-content::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top px-3">
-    <button class="toggle-sidebar-btn" onclick="toggleSidebar()">☰</button>
-    <a class="navbar-brand theme-text" href="#">ARP Resto</a>
-    <div class="ms-auto d-flex align-items-center">
-      <button class="btn btn-sm btn-outline-light mode-toggle me-2" onclick="toggleMode()">🌙/☀️</button>
-      <a class="btn btn-logout" href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </div>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <span class="navbar-brand">ARP Resto</span>
+    <button class="mode-toggle" onclick="toggleMode()">🌙/☀️</button>
+    <button class="btn-logout" onclick="confirmLogout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
   </nav>
 
   <div class="wrapper">
     <nav class="sidebar p-3" id="sidebar">
-      <div>
-        <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link" href="/admin/home"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-barang"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-pengguna"><i class="fas fa-user-cog"></i> Kelola Pengguna</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin/pesanan"><i class="fas fa-receipt"></i> Lihat Pesanan</a></li>
-        </ul>
-      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link" href="/admin/home"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-barang"><i class="fas fa-utensils"></i> Kelola Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/admin-kelola-pengguna"><i class="fas fa-user-cog"></i> Kelola Pengguna</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/pesanan"><i class="fas fa-receipt"></i> Lihat Pesanan</a></li>
+      </ul>
     </nav>
 
-    <main class="main-content" id="mainContent">
+    <main id="mainContent" class="main-content transition-in slide-left">
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
@@ -271,23 +230,35 @@
         window.location.href = "/logout";
       }
     }
-
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('mainContent');
-      sidebar.classList.toggle('hide');
-      mainContent.classList.toggle('full');
+      document.getElementById('sidebar').classList.toggle('hide');
+      document.getElementById('mainContent').classList.toggle('full');
     }
-
+    const htmlEl = document.documentElement;
     function toggleMode() {
-      document.body.classList.toggle('light-mode');
-      localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+      const next = htmlEl.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-bs-theme', next);
+      localStorage.setItem('theme', next);
     }
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('theme');
+      if (saved) htmlEl.setAttribute('data-bs-theme', saved);
 
-    document.addEventListener('DOMContentLoaded', function () {
-      if (localStorage.getItem('theme') === 'light') {
-        document.body.classList.add('light-mode');
-      }
+      // Page transitions on sidebar links
+      document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+          const href = link.getAttribute('href');
+          if (!href || href === window.location.pathname) return;
+          e.preventDefault();
+          const trans = ['slide-left','slide-right','zoom-in','rotate-in'];
+          const main = document.getElementById('mainContent');
+          const next = trans[Math.floor(Math.random() * trans.length)];
+          main.classList.replace('transition-in','transition-out');
+          const curr = main.className.match(/slide-left|slide-right|zoom-in|rotate-in/)[0];
+          main.classList.replace(curr, next);
+          setTimeout(() => window.location.href = href, 600);
+        });
+      });
     });
   </script>
 </body>

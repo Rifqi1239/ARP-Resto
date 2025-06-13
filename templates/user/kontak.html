@@ -1,25 +1,131 @@
-{%extends 'user/layout.html'%}
-{%block isi%}
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-    <!-- Card 2 -->
-    <div style="width: 23%; border: 1px solid #000; padding: 10px; margin: 10px; text-align: center;">
-        <h3>Rifqi</h3>
-        <p><strong>Email:</strong> Rifqi@example.com</p>
-        <p><strong>No. Telepon:</strong> +62 812 9876 5432</p>
-    </div>
-
-    <!-- Card 3 -->
-    <div style="width: 23%; border: 1px solid #000; padding: 10px; margin: 10px; text-align: center;">
-        <h3>Ages</h3>
-        <p><strong>Email:</strong> ages@example.com</p>
-        <p><strong>No. Telepon:</strong> +62 813 1234 5678</p>
-    </div>
-
-    <!-- Card 4 -->
-    <div style="width: 23%; border: 1px solid #000; padding: 10px; margin: 10px; text-align: center;">
-        <h3>Pajri</h3>
-        <p><strong>Email:</strong> pajri@example.com</p>
-        <p><strong>No. Telepon:</strong> +62 819 2345 6789</p>
-    </div>
+{% extends 'user/layout.html' %}
+{% block isi %}
+<!-- Deskripsi Toko -->
+<div class="text-center mb-5" style="font-family: 'Poppins', 'Arial';">
+  <h1 class="mb-3 gradient-text">Selamat Datang di Resto Kami!</h1>
+  <p style="font-size: 20px; max-width: 700px; margin: 0 auto;">
+    Kami adalah toko modern yang menyediakan berbagai makanan dan minuman berkualitas dengan pelayanan terbaik. 
+    Dengan komitmen terhadap kepuasan pelanggan, tim kami siap membantu Anda dalam setiap kebutuhan belanja Anda. 
+    Jangan ragu untuk menghubungi kami melalui kontak di bawah ini.
+  </p>
 </div>
-{%endblock%}
+
+<!-- Pembatas Elegan -->
+<div class="fancy-divider-container mb-5">
+  <div class="fancy-divider"></div>
+</div>
+
+<!-- Judul -->
+<h2 class="text-center mb-2 gradient-text">Tim Kami</h2>
+<p class="text-center mb-5 text-muted" style="font-family: 'Poppins', sans-serif; font-size: 20px;">Hubungi kami jika ada komplain:</p>
+
+<!-- Card Container -->
+<div class="row justify-content-center">
+  {% set members = [
+    {'nama': 'Rifqi', 'email': 'rifqi@example.com', 'telepon': '+62 812 9876 5432', 'foto': 'rifqi.jpeg'},
+    {'nama': 'Ages', 'email': 'ages@example.com', 'telepon': '+62 813 1234 5678', 'foto': 'ages.jpeg'},
+    {'nama': 'Pajri', 'email': 'pajri@example.com', 'telepon': '+62 819 2345 6789', 'foto': 'pajri.jpeg'},
+    {'nama': 'Farhat', 'email': 'farhat@example.com', 'telepon': '+62 829 4398 8900', 'foto': 'farhat.jpeg'},
+    {'nama': 'Rahmat', 'email': 'rahmat@example.com', 'telepon': '+62 829 4300 8992', 'foto': 'rahmat.jpeg'},
+    {'nama': 'upiakbanun', 'email': 'upiakbanun@example.com', 'telepon': '+62 829 4399 8569', 'foto': 'upiakbanun.jpeg'},
+    {'nama': 'Fauzan', 'email': 'fauzan@example.com', 'telepon': '+62 819 7998 8980', 'foto': 'fauzan.jpeg'}
+  ] %}
+
+  {% for m in members %}
+  <div class="col-sm-10 col-md-6 col-lg-4 mb-4">
+    <div class="card team-card border-0 shadow-lg rounded-4 overflow-hidden h-100 theme-card">
+      <img src="{{ url_for('static', filename='uploads/' ~ m.foto) }}" class="card-img-top" alt="Foto {{ m.nama }}" style="height: 250px; object-fit: cover;">
+      <div class="card-body text-center">
+        <h5 class="card-title fw-bold">{{ m.nama }}</h5>
+        <p class="card-text mb-1"><i class="bi bi-envelope-fill me-2"></i>{{ m.email }}</p>
+        <p class="card-text"><i class="bi bi-telephone-fill me-2"></i>{{ m.telepon }}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- CSS Styling -->
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .gradient-text {
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .team-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Fancy Divider */
+  .fancy-divider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fancy-divider {
+    width: 0;
+    height: 4px;
+    border-radius: 2px;
+    animation: growLine 1.2s ease-out forwards;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    box-shadow: 0 0 15px rgba(0, 114, 255, 0.6);
+  }
+
+  @keyframes growLine {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+    to {
+      width: 220px;
+      opacity: 1;
+    }
+  }
+
+  /* Light Mode */
+  @media (prefers-color-scheme: light) {
+    .theme-card {
+      background-color: #ffffff !important;
+      color: #0d0050 !important;
+    }
+    .theme-card .card-title,
+    .theme-card .card-text {
+      color: #0d0050 !important;
+    }
+
+    .fancy-divider {
+      background: linear-gradient(to right, #000000, #333333);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .theme-card {
+      background-color: #000000 !important;
+      color: #ffffff !important;
+    }
+    .theme-card .card-title,
+    .theme-card .card-text {
+      color: #ffffff !important;
+    }
+
+    .fancy-divider {
+      background: linear-gradient(to right, #ffffff, #999999);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+  }
+</style>
+{% endblock %}
